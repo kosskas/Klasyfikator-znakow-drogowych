@@ -14,12 +14,13 @@ print(f"liczba klas = {get_classes_num()}")
 print("wczytywanie")
 train_data, test_data = load_data()
 print("start")
-#model = NearestNeighborClasiffier(norma = 1)
+model = NearestNeighborClasiffier(klasy=get_classes_num(),norma = 1)
 #model = LinearClasiffier(klasy=get_classes_num(), metoda="localsearch",iters=1000,step=0.0001)
 ##model.wczytaj_model("rr")
-#model.train(*train_data)
-#model.evaluate(*test_data)
+model.train(*train_data)
+model.evaluate(*test_data)
 #model.zapisz_model("36_1000")
+
 #
 #i, ls = model.get_loss()
 #plt.plot(i, ls)
@@ -30,19 +31,19 @@ print("start")
 
 ###############
 
-for j in [-5, -6, -7]:
-    step = 10**j
-    print(f"LR = {10**j}")
-    model = LinearClasiffier(klasy=get_classes_num(),metoda="localsearch",iters=10000,step=step)
-    model.train(*train_data)
-    i, ls = model.get_loss()
-    model.evaluate(*test_data)
-    plt.plot(i, ls, label = f"LR = {10**j}")
-plt.legend(loc="upper right")
-plt.title("Wartość funkcji straty w kolejnych iteracjach")
-plt.xlabel("Iteracje")
-plt.ylabel("Funkcja straty")
-plt.show()
+#for j in [-5, -6, -7]:
+#    step = 10**j
+#    print(f"LR = {10**j}")
+#    model = LinearClasiffier(klasy=get_classes_num(),metoda="localsearch",iters=10000,step=step)
+#    model.train(*train_data)
+#    i, ls = model.get_loss()
+#    model.evaluate(*test_data)
+#    plt.plot(i, ls, label = f"LR = {10**j}")
+#plt.legend(loc="upper right")
+#plt.title("Wartość funkcji straty w kolejnych iteracjach")
+#plt.xlabel("Iteracje")
+#plt.ylabel("Funkcja straty")
+#plt.show()
 
 
 
@@ -52,9 +53,9 @@ plt.show()
 ##najlepsze k crosswalidacja
 #valid = []
 #Xtr, Ytr = train_data
-#D = [Xtr[i:i+1000] for i in range(0, 5)]
-#T = [Ytr[i:i+1000] for i in range(0,5)]
-#for k in [1, 2, 3, 5, 10, 20, 50, 100]:
+#D = [Xtr[i:i+4000] for i in range(0, 5)]
+#T = [Ytr[i:i+4000] for i in range(0,5)]
+#for k in [1, 3, 5, 10, 20, 50, 100]:
 #    #print(k)
 #    for i in range(0, 5):
 #        #print([i%5 for i in range(i, i+4)], (i+4)%5)

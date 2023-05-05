@@ -7,9 +7,9 @@ from matplotlib import pyplot as plt
 from sklearn.metrics import confusion_matrix
 
 class NearestNeighborClasiffier:
-    def __init__(self, norma = 0, k = None):
-        normy = [self.norma1, self.norma1, self.norma2]
-        self.norma = normy[norma]
+    def __init__(self,klasy, norma = 1, k = None):
+        self.__CLASS_NUM__ = klasy
+        self.p = norma
         self.k = k
 
     def train(self, X, y):
@@ -45,3 +45,6 @@ class NearestNeighborClasiffier:
 
     def norma2(self, X, i):
         return np.sqrt(np.sum(np.square(self.Xtr - X[i,:]), axis = 1))
+
+    def norma(self, X, i):
+        return np.power(np.sum(np.power(np.abs(self.Xtr - X[i,:]),self.p),axis = 1),1/self.p)

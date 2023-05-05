@@ -37,7 +37,7 @@ def load_single(file):
 
 model = LinearClasiffier(klasy=get_classes_num(), metoda="localsearch",iters=10000,step=0.00001)
 model.wczytaj_model("./Modele/model_36_100000")
-
+print("start")
 while True:
     inp = str(input())
     test = load_single("zdjTestowe\\"+inp+".png")
