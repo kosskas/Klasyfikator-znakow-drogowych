@@ -14,11 +14,11 @@ print(f"liczba klas = {get_classes_num()}")
 print("wczytywanie")
 train_data, test_data = load_data()
 print("start")
-model = NearestNeighborClasiffier(klasy=get_classes_num(),norma = 1)
+#model = NearestNeighborClasiffier(klasy=get_classes_num(),norma = 1)
 #model = LinearClasiffier(klasy=get_classes_num(), metoda="localsearch",iters=1000,step=0.0001)
 ##model.wczytaj_model("rr")
-model.train(*train_data)
-model.evaluate(*test_data)
+#model.train(*train_data)
+#model.evaluate(*test_data)
 #model.zapisz_model("36_1000")
 
 #
@@ -70,3 +70,15 @@ model.evaluate(*test_data)
 #        print((k,[i%5 for i in range(i, i+4)],(i+4)%5, sre ))
 #        valid.append( (k,[i%5 for i in range(i, i+4)],(i+4)%5, sre ) )
 #print(valid)
+
+output = []
+for i in [3, 36]:
+    for k in [1, 3, 5, 10, 20, 50, 100]:
+        for n in range(1, 8):
+            model = NearestNeighborClasiffier(klasy=i,norma = n, k=k)
+            model.train(*train_data)
+            avg = model.evaluate(*test_data)
+            output.append(f"{k},{n},{avg}")
+print("k,n,avg")
+for o in output:
+    print(o)
