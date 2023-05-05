@@ -78,6 +78,7 @@ for i in [3, 36]:
             model = NearestNeighborClasiffier(klasy=i,norma = n, k=k)
             model.train(*train_data)
             avg = model.evaluate(*test_data)
+            print(f"k={k} n={n} avg={avg}")
             output.append(f"{k},{n},{avg}")
 print("k,n,avg")
 for o in output:
