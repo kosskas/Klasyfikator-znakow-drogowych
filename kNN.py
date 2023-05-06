@@ -10,7 +10,10 @@ class NearestNeighborClasiffier:
     def __init__(self,klasy, norma = 1, k = None):
         self.__CLASS_NUM__ = klasy
         self.p = norma
-        self.k = k
+        if k == None:
+            self.k = 1
+        else:
+            self.k = k
 
     def train(self, X, y):
         self.Xtr = X
@@ -28,8 +31,6 @@ class NearestNeighborClasiffier:
         return avg
 
     def predict(self, X, k = None):
-        if self.k == None:
-            k = 1
         num_test = X.shape[0]
         Ypred = np.zeros(num_test, dtype = self.ytr.dtype)
         for i in range(num_test):
