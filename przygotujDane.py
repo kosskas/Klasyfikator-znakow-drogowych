@@ -5,15 +5,15 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 ### Nie uruchamiać ruszać! ###
+"""To jest  plik używany wyłącznie do konfiguracji danych """
 
 
+#path= os.path.dirname(os.path.abspath(__file__))
+#p = Path(path+"\Train")
 
-path= os.path.dirname(os.path.abspath(__file__))
-p = Path(path+"\Train")
 
-
-dirs = [str(f) for f in p.iterdir() if f.is_dir()]
-dane = []
+#dirs = [str(f) for f in p.iterdir() if f.is_dir()]
+#dane = []
 #index = 0
 
 

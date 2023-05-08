@@ -1,7 +1,4 @@
-from PIL import Image
-import os, sys, csv, cv2, random
 import numpy as np
-import pandas as pd
 from matplotlib import pyplot as plt
 from kNN import NearestNeighborClasiffier
 from Linear import LinearClasiffier
@@ -14,11 +11,12 @@ print(f"liczba klas = {get_classes_num()}")
 print("wczytywanie")
 train_data, test_data = load_data()
 print("start")
-#model = NearestNeighborClasiffier(klasy=get_classes_num(),norma = 1)
+model = NearestNeighborClasiffier(klasy=get_classes_num(),norma = 2, k=1)
 #model = LinearClasiffier(klasy=get_classes_num(), metoda="localsearch",iters=1000,step=0.0001)
 ##model.wczytaj_model("rr")
-#model.train(*train_data)
-#model.evaluate(*test_data)
+
+model.train(*train_data)
+model.evaluate(*test_data)
 #model.zapisz_model("36_1000")
 
 #
@@ -49,37 +47,16 @@ print("start")
 
 
 
-##KNN###
-##najlepsze k crosswalidacja
-#valid = []
-#Xtr, Ytr = train_data
-#D = [Xtr[i:i+4000] for i in range(0, 5)]
-#T = [Ytr[i:i+4000] for i in range(0,5)]
-#for k in [1, 3, 5, 10, 20, 50, 100]:
-#    #print(k)
-#    for i in range(0, 5):
-#        #print([i%5 for i in range(i, i+4)], (i+4)%5)
-#        XTrData = np.concatenate([D[i%5] for i in range(i, i+4)])
-#        YTrVal = np.concatenate([T[i%5] for i in range(i, i+4)])
-#        TestData = D[(i+4)%5]
-#        TestVal = T[(i+4)%5]
-#        nn = NearestNeighborClasiffier(norma = 2) 
-#        nn.train(XTrData, YTrVal)
-#        Yte_predict = nn.predict(TestData, k)
-#        sre = np.mean(Yte_predict == TestVal)
-#        print((k,[i%5 for i in range(i, i+4)],(i+4)%5, sre ))
-#        valid.append( (k,[i%5 for i in range(i, i+4)],(i+4)%5, sre ) )
-#print(valid)
 
-output = []
-for i in [3, 36]:
-    for k in [1, 3, 5, 10, 20, 50, 100]:
-        for n in range(1, 8):
-            model = NearestNeighborClasiffier(klasy=i,norma = n, k=k)
-            model.train(*train_data)
-            avg = model.evaluate(*test_data)
-            print(f"k={k} n={n} avg={avg}")
-            output.append(f"{k},{n},{avg}")
-print("k,n,avg")
-for o in output:
-    print(o)
+
+#output = []
+#for i in [3, 36]:
+#    for k in [1, 3, 5,     7, 10, 20,   30, 50, 100]:
+#        model = NearestNeighborClasiffier(klasy=i, k=k)
+#        model.train(*train_data)
+#        avg = model.evaluate(*test_data)
+#        print(f"k={k} n={n} avg={avg}")
+#        output.append(f"{k},{n},{avg}")
+#print("k,n,avg")
+#for o in output:
+#    print(o)

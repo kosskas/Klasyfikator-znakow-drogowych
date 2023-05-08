@@ -28,6 +28,7 @@ def load_images(file):
 def load_data():
     X_train, Y_train = load_images("train.csv")
     X_test, Y_test = load_images("test.csv")
+    #X_test, Y_test = load_images("jeden.csv")
     X_train = X_train.reshape(X_train.shape[0], 32 * 32 * 3) # zamiast listy macierzy, lista wektorów jednowymiarowych
     X_test = X_test.reshape(X_test.shape[0], 32 * 32 * 3) 
     return (X_train, Y_train), (X_test, Y_test)

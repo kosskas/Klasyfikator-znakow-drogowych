@@ -7,13 +7,10 @@ from matplotlib import pyplot as plt
 from sklearn.metrics import confusion_matrix
 
 class NearestNeighborClasiffier:
-    def __init__(self,klasy, norma = 1, k = None):
+    def __init__(self,klasy, norma, k):
         self.__CLASS_NUM__ = klasy
         self.p = norma
-        if k == None:
-            self.k = 1
-        else:
-            self.k = k
+        self.k = k
 
     def train(self, X, y):
         self.Xtr = X
@@ -30,18 +27,18 @@ class NearestNeighborClasiffier:
             print("Klasa [{0}] = {1:.2f}".format(i,pred[i]))
         return avg
 
-    def predict(self, X, k = None):
+    def predict(self, X):
         num_test = X.shape[0]
         Ypred = np.zeros(num_test, dtype = self.ytr.dtype)
         for i in range(num_test):
             dist = self.norma(X, i)
-            min_idx = np.argsort(dist)[:k] # wez indexy k najblizszych sasiadow
+            min_idx = np.argsort(dist)[:self.k] # wez indexy k najblizszych sasiadow
             zlicz = np.bincount(min_idx) # zlicz wystąpienia
             min_index = np.argmax(zlicz) # wybierz najczęstrzy index
             Ypred[i] = self.ytr[min_index] # klasą obj testowego jest klasa najb. sąsiada
         return Ypred
 
-    def norma1(self, X, i):
+    def L1(self, X, i):
         return np.sum(np.abs(self.Xtr - X[i,:]), axis = 1)
 
     def norma2(self, X, i):
@@ -49,3 +46,25 @@ class NearestNeighborClasiffier:
 
     def norma(self, X, i):
         return np.power(np.sum(np.power(np.abs(self.Xtr - X[i,:]),self.p),axis = 1),1/self.p)
+
+##KNN###
+##najlepsze k crosswalidacja
+#valid = []
+#Xtr, Ytr = train_data
+#D = [Xtr[i:i+4000] for i in range(0, 5)]
+#T = [Ytr[i:i+4000] for i in range(0,5)]
+#for k in [1, 3, 5, 10, 20, 50, 100]:
+#    #print(k)
+#    for i in range(0, 5):
+#        #print([i%5 for i in range(i, i+4)], (i+4)%5)
+#        XTrData = np.concatenate([D[i%5] for i in range(i, i+4)])
+#        YTrVal = np.concatenate([T[i%5] for i in range(i, i+4)])
+#        TestData = D[(i+4)%5]
+#        TestVal = T[(i+4)%5]
+#        nn = NearestNeighborClasiffier(norma = 2) 
+#        nn.train(XTrData, YTrVal)
+#        Yte_predict = nn.predict(TestData, k)
+#        sre = np.mean(Yte_predict == TestVal)
+#        print((k,[i%5 for i in range(i, i+4)],(i+4)%5, sre ))
+#        valid.append( (k,[i%5 for i in range(i, i+4)],(i+4)%5, sre ) )
+#print(valid)
