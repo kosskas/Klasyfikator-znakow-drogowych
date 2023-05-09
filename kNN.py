@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 from sklearn.metrics import confusion_matrix
 
 class NearestNeighborClasiffier:
-    def __init__(self,klasy, norma, k):
+    def __init__(self,klasy,k, norma):
         self.__CLASS_NUM__ = klasy
         self.p = norma
         self.k = k
@@ -22,7 +22,10 @@ class NearestNeighborClasiffier:
         print(f"{avg}")
         confmat = confusion_matrix(y,Y_predict)
         pred = confmat.diagonal()/confmat.sum(axis=1)
-        print(confmat)
+        for i in range(confmat.shape[0]):
+            for j in range(confmat.shape[1]):
+                print(confmat[i][j], end=" ")
+            print()
         for i in [i for i in range(self.__CLASS_NUM__)]:
             print("Klasa [{0}] = {1:.2f}".format(i,pred[i]))
         return avg

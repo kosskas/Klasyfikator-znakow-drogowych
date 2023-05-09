@@ -5,19 +5,19 @@ from Linear import LinearClasiffier
 from load_data import load_data, get_classes_num
 
 ###
-load_data.N_OF_CLASSES = 3 # 36
+load_data.N_OF_CLASSES = 3#36
 ##
 print(f"liczba klas = {get_classes_num()}")
 print("wczytywanie")
 train_data, test_data = load_data()
 print("start")
-model = NearestNeighborClasiffier(klasy=get_classes_num(),norma = 2, k=1)
+#model = NearestNeighborClasiffier(klasy=get_classes_num(),norma = 2, k=1)
 #model = LinearClasiffier(klasy=get_classes_num(), metoda="localsearch",iters=1000,step=0.0001)
-##model.wczytaj_model("rr")
+#model.wczytaj_model("./Modele/model_3_100000")
 
-model.train(*train_data)
-model.evaluate(*test_data)
-#model.zapisz_model("36_1000")
+#model.train(*train_data)
+#model.evaluate(*test_data)
+#model.zapisz_model("nowy_model")
 
 #
 #i, ls = model.get_loss()
@@ -47,14 +47,24 @@ model.evaluate(*test_data)
 
 
 
-
+output = []
+for i in [3, 36]:
+    for k in [1, 3, 5]:
+        model = NearestNeighborClasiffier(klasy=i, k=k, norma=1)
+        model.train(*train_data)
+        avg = model.evaluate(*test_data)
+        print(f"k={k} n={n} avg={avg}")
+        output.append(f"{k},{n},{avg}")
+print("k,n,avg")
+for o in output:
+    print(o)
 
 #output = []
 #for i in [3, 36]:
-#    for k in [1, 3, 5,     7, 10, 20,   30, 50, 100]:
-#        model = NearestNeighborClasiffier(klasy=i, k=k)
+#    for norma in [1, 2, 3]:
+#        model = NearestNeighborClasiffier(klasy=i, k=1, norma=norma)
 #        model.train(*train_data)
-#        avg = model.evaluate(*test_data)
+#        avg = mosel.evaluate(*test_data)
 #        print(f"k={k} n={n} avg={avg}")
 #        output.append(f"{k},{n},{avg}")
 #print("k,n,avg")
