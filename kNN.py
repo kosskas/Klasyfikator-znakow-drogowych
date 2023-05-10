@@ -18,7 +18,7 @@ class NearestNeighborClasiffier:
 
     def evaluate(self, X, y):
         Y_predict = self.predict(X)
-        avg = round(np.mean(Y_predict == y),2)
+        avg = round(np.mean(Y_predict == y),4)
         print(f"{avg}")
         confmat = confusion_matrix(y,Y_predict)
         pred = confmat.diagonal()/confmat.sum(axis=1)
@@ -28,7 +28,7 @@ class NearestNeighborClasiffier:
             print()
         for i in [i for i in range(self.__CLASS_NUM__)]:
             print("Klasa [{0}] = {1:.2f}".format(i,pred[i]))
-        return avg
+        return avg, confmat
 
     def predict(self, X):
         num_test = X.shape[0]
