@@ -1,18 +1,54 @@
 from PIL import Image
 import cv2
-import os, sys, csv
+import os, sys, csv, random,re
 import numpy as np
 import pandas as pd
 from pathlib import Path
+from matplotlib import pyplot as plt
 ### Nie uruchamiać ruszać! ###
 """To jest  plik używany wyłącznie do konfiguracji danych """
 
 
 #path= os.path.dirname(os.path.abspath(__file__))
-#p = Path(path+"\Train")
+
+#class_names = ["Ograniczenie prędkości do 20 km/h","Ograniczenie prędkości do 30 km/h","Ograniczenie prędkości do 50 km/h",
+#        "Ograniczenie prędkości do 60 km/h","Ograniczenie prędkości do 70 km/h","Ograniczenie prędkości do 80 km/h",
+#        "Ograniczenie prędkości do 100 km/h","Ograniczenie prędkości do 120 km/h", "Zakaz wyprzedzania", "Zakaz wyprzedzania przez samochody ciężarowe",
+#        "Zakaz ruchu w obu kierunkach", "zakaz wjazdu samochodów ciężarowych","zakaz wjazdu", "skrzyżowanie z drogą podporządkowaną", "inne niebezpieczeństwo",
+#        "niebezpieczny zakręt w lewo","niebezpieczny zakręt w prawo","niebezpieczne zakręty - pierwszy w lewo", "nierówna droga", "śliska jezdnia",
+#        "zwężenie jezdni - prawostronne", "roboty na drodze","sygnały świetlne","przejście dla pieszych","dzieci","rowerzyści!!!", "oszronienie jezdni","zwierzęta dzikie",
+#        "nakaz jazdy w prawo za znakiem", "nakaz jazdy w lewo za znakiem", "nakaz jazdy prosto", "nakaz jazdy prosto lub w prawo", "nakaz jazdy prosto lub w lewo",
+#        "nakaz jazdy z prawej strony znaku", "nakaz jazdy z lewej strony znaku", "ruch okrężny"]
+
+#for r in range(20):
+#    train_images = []
+#    train_labels = [i for i in range(36)]
+#    p = Path(path+"\Train")
+
+#    dirs = [str(f) for f in p.iterdir() if f.is_dir()]
+#    dirs = sorted(dirs, key = lambda x: (int(re.sub('\D','',x)),x))
+#    #print(dirs)
+#    for dir in dirs:
+#        #for file in os.listdir(dir):
+#        file = random.choice(os.listdir(dir))
+#        image = cv2.imread(os.path.join(dir,file))
+#        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+#        train_images.append(image)
 
 
-#dirs = [str(f) for f in p.iterdir() if f.is_dir()]
+#    plt.figure(figsize=(10,10))
+#    for i in range(36):
+#        plt.subplot(6,6,i+1)
+#        plt.xticks([])
+#        plt.yticks([])
+#        plt.grid(False)
+#        plt.imshow(train_images[i]/255.0)
+#        #plt.xlabel(class_names[train_labels[i]])
+#        plt.xlabel(f"[{i}]")
+#    plt.show()
+
+
+
 #dane = []
 #index = 0
 

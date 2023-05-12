@@ -5,15 +5,17 @@ from Linear import LinearClasiffier
 from load_data import load_data, get_classes_num
 
 ##
-load_data.N_OF_CLASSES = 3#36
+load_data.N_OF_CLASSES = 36#36
 ##
 print(f"liczba klas = {get_classes_num()}")
 print("wczytywanie")
 train_data, test_data = load_data()
 print("start")
-model = NearestNeighborClasiffier(klasy=get_classes_num(),norma = 2, k=1)
-#model = LinearClasiffier(klasy=get_classes_num(), metoda="localsearch",iters=1000,step=0.0001)
-#model.wczytaj_model("./Modele/model_36_100000")
+
+
+#model = NearestNeighborClasiffier(klasy=get_classes_num(),norma = 3, k = 1)
+model = LinearClasiffier(klasy=get_classes_num(), metoda="localsearch",iters=1000,step=0.0001)
+model.wczytaj_model("./Modele/model_36_100000")
 
 #model.train(*train_data)
 avg,confmat = model.evaluate(*test_data)

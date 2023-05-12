@@ -43,6 +43,3 @@ while True:
     test = load_single("zdjTestowe\\"+inp+".png")
     prd_idx = int(model.predict(test))
     print(f"Znak {klasa[nadrzedna(prd_idx)]}\nOpis: {opis[prd_idx]}")
-
-
-
