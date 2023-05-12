@@ -66,7 +66,7 @@ class LinearClasiffier:
             self.licz.append(i)
             self.strata.append(loss)
             if i % 100 == 0:
-                print('iteracja %d the loss was %f, best %f' % (i, loss, bestloss))
+                print('iteracja {0} the loss was {1}, best {2}'.format(i, loss, bestloss))
 
     def random_search(self, Xtrain, Ytrain):
         #raz lepiej raz gorzej
@@ -78,7 +78,7 @@ class LinearClasiffier:
                 bestloss = loss
                 self.W = Wnew
             if i % 100 == 0:
-                print('iteracja %d the loss was %f, best %f' % (i, loss, bestloss))
+                print('iteracja {0} the loss was {1}, best {2}'.format(i, loss, bestloss))
 
     def get_loss(self):
         return self.licz, self.strata
