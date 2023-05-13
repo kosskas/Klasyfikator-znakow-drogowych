@@ -5,7 +5,7 @@
     <ProjectGuid>805ab3ec-da6e-4edd-8816-f1726a84eb7c</ProjectGuid>
     <ProjectHome>
     </ProjectHome>
-    <StartupFile>Network.py</StartupFile>
+    <StartupFile>train.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>

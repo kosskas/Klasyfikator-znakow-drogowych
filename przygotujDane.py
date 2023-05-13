@@ -9,50 +9,76 @@ from matplotlib import pyplot as plt
 """To jest  plik używany wyłącznie do konfiguracji danych """
 
 
-#path= os.path.dirname(os.path.abspath(__file__))
 
-#class_names = ["Ograniczenie prędkości do 20 km/h","Ograniczenie prędkości do 30 km/h","Ograniczenie prędkości do 50 km/h",
-#        "Ograniczenie prędkości do 60 km/h","Ograniczenie prędkości do 70 km/h","Ograniczenie prędkości do 80 km/h",
-#        "Ograniczenie prędkości do 100 km/h","Ograniczenie prędkości do 120 km/h", "Zakaz wyprzedzania", "Zakaz wyprzedzania przez samochody ciężarowe",
-#        "Zakaz ruchu w obu kierunkach", "zakaz wjazdu samochodów ciężarowych","zakaz wjazdu", "skrzyżowanie z drogą podporządkowaną", "inne niebezpieczeństwo",
-#        "niebezpieczny zakręt w lewo","niebezpieczny zakręt w prawo","niebezpieczne zakręty - pierwszy w lewo", "nierówna droga", "śliska jezdnia",
-#        "zwężenie jezdni - prawostronne", "roboty na drodze","sygnały świetlne","przejście dla pieszych","dzieci","rowerzyści!!!", "oszronienie jezdni","zwierzęta dzikie",
-#        "nakaz jazdy w prawo za znakiem", "nakaz jazdy w lewo za znakiem", "nakaz jazdy prosto", "nakaz jazdy prosto lub w prawo", "nakaz jazdy prosto lub w lewo",
-#        "nakaz jazdy z prawej strony znaku", "nakaz jazdy z lewej strony znaku", "ruch okrężny"]
+"""rysowanie macierzy"""
+##confmat =  np.loadtxt("macierz.txt",usecols= range(3))
+#row_sums=confmat.sum(axis=1,keepdims=True)
+#norm_mat=confmat/row_sums
+#norm_mat*=100
 
-#for r in range(20):
-#    train_images = []
-#    train_labels = [i for i in range(36)]
-#    p = Path(path+"\Train")
-
-#    dirs = [str(f) for f in p.iterdir() if f.is_dir()]
-#    dirs = sorted(dirs, key = lambda x: (int(re.sub('\D','',x)),x))
-#    #print(dirs)
-#    for dir in dirs:
-#        #for file in os.listdir(dir):
-#        file = random.choice(os.listdir(dir))
-#        image = cv2.imread(os.path.join(dir,file))
-#        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-#        train_images.append(image)
+#plt.matshow(norm_mat, cmap=plt.cm.Blues)
+##plt.title("Klasyfikator liniowy dla {0} klas\nDokładność = {1:.2%}\n".format(get_classes_num(),avg))
+#plt.title("Klasyfikator kNN dla {0} klas\nDokładność = 81%\n".format(get_classes_num()))
+#plt.ylabel("Rzeczywiste klasy")
+#plt.xlabel("Przewidywane klasy")
+##for i in range(confmat.shape[0]):
+##    for j in range(confmat.shape[1]):
+##        plt.text(j, i, f"{int(confmat[i, j])}", ha="center", va="center", color="w")
+#plt.colorbar(format='%.0f%%')
+#plt.clim(0, 100)
+#plt.show()
 
 
-#    plt.figure(figsize=(10,10))
-#    for i in range(36):
-#        plt.subplot(6,6,i+1)
-#        plt.xticks([])
-#        plt.yticks([])
-#        plt.grid(False)
-#        plt.imshow(train_images[i]/255.0)
-#        #plt.xlabel(class_names[train_labels[i]])
-#        plt.xlabel(f"[{i}]")
-#    plt.show()
+#np.fill_diagonal(norm_mat,0)
+#plt.matshow(norm_mat, cmap=plt.cm.Greys)
+#plt.title("Błędy popełnione przy klasyfikacji")
+#plt.ylabel("Rzeczywiste klasy")
+#plt.xlabel("Przewidywane klasy")
+##for i in range(norm_mat.shape[0]):
+##    for j in range(norm_mat.shape[1]):
+##        if j == i:
+##            plt.text(j, i, f"0", ha="center", va="center", color="w")
+##        else:
+##            plt.text(j, i, f"{int(confmat[i, j])}", ha="center", va="center", color="w")
+#plt.colorbar(format='%.2f%%')
+#plt.show()
+
+"""wyświetlenie wszystkich klas"""
+path= os.path.dirname(os.path.abspath(__file__))
+
+for r in range(20):
+    train_images = []
+    train_labels = [i for i in range(36)]
+    p = Path(path+"\Train")
+
+    dirs = [str(f) for f in p.iterdir() if f.is_dir()]
+    dirs = sorted(dirs, key = lambda x: (int(re.sub('\D','',x)),x))
+    #print(dirs)
+    for dir in dirs:
+        #for file in os.listdir(dir):
+        file = random.choice(os.listdir(dir))
+        image = cv2.imread(os.path.join(dir,file))
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        train_images.append(image)
+
+
+    plt.figure(figsize=(10,10))
+    for i in range(36):
+        plt.subplot(6,6,i+1)
+        plt.xticks([])
+        plt.yticks([])
+        plt.grid(False)
+        plt.imshow(train_images[i]/255.0)
+        #plt.xlabel(class_names[train_labels[i]])
+        plt.xlabel(f"[{i}]")
+    plt.show()
 
 
 
+
+"""Przekształcanie bazy danych"""
 #dane = []
 #index = 0
-
-
 #for dir in dirs:
 #    klasa = os.path.basename(dir)
 #    index = 0
