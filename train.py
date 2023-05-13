@@ -36,10 +36,10 @@ for i in [3, 36]:
     print("wczytywanie")
     train_data, test_data = load_data()
     print("start")
-    for k in [1, 3, 5]:
+    for k in [7, 10, 20]:
         model = NearestNeighborClasiffier(klasy=i, k=k, norma=1)
         model.train(*train_data)
-        avg = model.evaluate(*test_data)
+        avg,_ = model.evaluate(*test_data)
         print(f"k={k} n=1 avg={avg}")
         output.append(f"{k},1,{avg}")
 print("k,n,avg")
@@ -55,10 +55,10 @@ for i in [3, 36]:
     print("wczytywanie")
     train_data, test_data = load_data()
     print("start")
-    for norma in [1, 2, 3]:
+    for norma in [4, 5, 6]:
         model = NearestNeighborClasiffier(klasy=i, k=1, norma=norma)
         model.train(*train_data)
-        avg = mosel.evaluate(*test_data)
+        avg,_ = model.evaluate(*test_data)
         print(f"k=1 n={norma} avg={avg}")
         output.append(f"1,{norma},{avg}")
 print("k,n,avg")
