@@ -2,11 +2,14 @@ from load_data import *
 import tensorflow as tf
 import numpy as np
 from tensorflow import keras
-from keras.models import Sequential
+from keras.models import *
 from keras.optimizers import Adam
 from keras import *
 from matplotlib import pyplot as plt
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score, precision_recall_curve,accuracy_score
+
+
+
 ###
 load_data.N_OF_CLASSES = 36#36
 ##
@@ -17,44 +20,54 @@ print("start")
 
 
 
-##model = tf.keras.models.load_model('Modele/siec3')
+model = load_model('Modele/nsiec36')
 
-model = Sequential([
-  layers.Rescaling(1./255, input_shape=(32, 32, 3)),
-  layers.Conv2D(16, 3, padding='same', activation='relu'),
-  layers.MaxPooling2D(),
-  layers.Conv2D(32, 3, padding='same', activation='relu'),
-  layers.MaxPooling2D(),
-  layers.Conv2D(64, 3, padding='same', activation='relu'),
-  layers.MaxPooling2D(),
-  layers.Flatten(),
-  layers.Dense(128, activation='relu'),
-  layers.Dense(load_data.N_OF_CLASSES)
-])
-
-
-model.compile(optimizer=Adam(),
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-              metrics=['accuracy'])
+#model = Sequential([
+#  layers.Rescaling(1./255, input_shape=(32, 32, 3)),
+#  layers.Conv2D(16, 3, padding='same', activation='relu'),
+#  layers.MaxPooling2D(),
+#  layers.Conv2D(32, 3, padding='same', activation='relu'),
+#  layers.MaxPooling2D(),
+#  layers.Conv2D(64, 3, padding='same', activation='relu'),
+#  layers.MaxPooling2D(),
+#  layers.Flatten(),
+#  layers.Dense(128, activation='relu'),
+#  layers.Dense(load_data.N_OF_CLASSES)
+#])
 
 
-history = model.fit(X_train, y_train, epochs=80, #80
-                   validation_data=(X_test, y_test))
-model.save('Modele/siec36_2')
+#model.compile(optimizer=Adam(),
+#              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+#              metrics=['accuracy'])
+
+
+#history = model.fit(X_train, y_train, epochs=80, #80
+#                   validation_data=(X_test, y_test))
+#model.save('Modele/nsiec36')
 
 
 _, avg = model.evaluate(X_test, y_test)
 print('Accuracy: {0:.4f}'.format(avg))
 
-
-
-plt.plot(history.epoch, history.history["loss"], 'g')
-plt.title("Wartość funkcji straty w kolejnych epokach")
-plt.xlabel("Epoki")
-plt.ylabel("Funkcja straty")
-plt.show()
-
 y_pred = np.argmax(model.predict(X_test), axis=-1)
+
+precision = round(precision_score(y_test, y_pred,average='weighted'),4)
+recall = round(recall_score(y_test, y_pred,average='weighted'),4)
+f1_score = round(f1_score(y_test, y_pred,average='weighted'),4)
+
+print(f"Precision = {precision}")
+print(f"Recall = {recall}")
+print(f"F1 Score = {f1_score}")
+
+#plt.plot(history.epoch, history.history["loss"], 'g')
+#plt.title("Wartość funkcji straty w kolejnych epokach")
+#plt.xlabel("Epoki")
+#plt.ylabel("Funkcja straty")
+#plt.show()
+
+#tf.keras.utils.plot_model(model, to_file="36cnn.png", show_shapes=True)
+#plot_model
+
 confmat = confusion_matrix(y_test, y_pred)
 for i in range(confmat.shape[0]):
     for j in range(confmat.shape[1]):

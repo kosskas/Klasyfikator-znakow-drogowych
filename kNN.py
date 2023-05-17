@@ -4,7 +4,7 @@ from PIL import Image
 import os, cv2, random, time
 from collections import Counter
 from matplotlib import pyplot as plt
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score, precision_recall_curve,accuracy_score
 
 class NearestNeighborClasiffier:
     def __init__(self,klasy,k, norma):
@@ -20,6 +20,14 @@ class NearestNeighborClasiffier:
         Y_predict = self.predict(X)
         avg = round(np.mean(Y_predict == y),4)
         print(f"{avg}")
+        precision = round(precision_score(y, Y_predict,average='weighted'),4)
+        recall = round(recall_score(y, Y_predict,average='weighted'),4)
+        f1 = round(f1_score(y, Y_predict,average='weighted'),4)
+
+        print(f"Precision = {precision}")
+        print(f"Recall = {recall}")
+        print(f"F1 Score = {f1}")
+
         confmat = confusion_matrix(y,Y_predict)
         pred = confmat.diagonal()/confmat.sum(axis=1)
         for i in range(confmat.shape[0]):
@@ -40,12 +48,6 @@ class NearestNeighborClasiffier:
             min_index = np.argmax(zlicz) # wybierz najczęstrzy index
             Ypred[i] = self.ytr[min_index] # klasą obj testowego jest klasa najb. sąsiada
         return Ypred
-
-    def L1(self, X, i):
-        return np.sum(np.abs(self.Xtr - X[i,:]), axis = 1)
-
-    def norma2(self, X, i):
-        return np.sqrt(np.sum(np.square(self.Xtr - X[i,:]), axis = 1))
 
     def norma(self, X, i):
         return np.power(np.sum(np.power(np.abs(self.Xtr - X[i,:]),self.p),axis = 1),1/self.p)

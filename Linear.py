@@ -4,7 +4,7 @@ from PIL import Image
 import os, cv2, random, time
 from collections import Counter
 from matplotlib import pyplot as plt
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score, precision_recall_curve,accuracy_score
 from load_data import get_classes_num
 
 class LinearClasiffier: 
@@ -35,6 +35,15 @@ class LinearClasiffier:
         avg = round(np.mean(Y_predict == y),4)
         print(f"{avg}")
         confmat = confusion_matrix(y,Y_predict)
+
+        precision = round(precision_score(y, Y_predict,average='weighted'),4)
+        recall = round(recall_score(y, Y_predict,average='weighted'),4)
+        f1 = round(f1_score(y, Y_predict,average='weighted'),4)
+
+        print(f"Precision = {precision}")
+        print(f"Recall = {recall}")
+        print(f"F1 Score = {f1}")
+
         pred = confmat.diagonal()/confmat.sum(axis=1)
         for i in range(confmat.shape[0]):
             for j in range(confmat.shape[1]):

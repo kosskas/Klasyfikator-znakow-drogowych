@@ -5,10 +5,70 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 from matplotlib import pyplot as plt
+from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score, precision_recall_curve
+import tensorflow as tf
+from tensorflow import keras
+from keras.models import *
+from keras.optimizers import Adam
+from keras import *
 ### Nie uruchamiać ruszać! ###
 """To jest  plik używany wyłącznie do konfiguracji danych """
 
 
+
+model = load_model('Modele/nsiec36')
+tf.keras.utils.plot_model(model, to_file="36cnn.png", show_shapes=True)
+
+"""45y4y"""
+#k =[1,3,5,7,10,20,30,50,100]
+
+#avg3 =[0.81,0.8,0.79,0.7717,0.7646,0.7375,0.716,0.6754,0.6129]
+
+#avg36=[0.22,0.21,0.2,0.1853,0.171,0.1489,0.1446,0.1282,0.1125]
+
+#n3 = [0.81,0.83,0.61,0.7263,0.5978,0.6043,0.4478,0.567,0.5275]
+
+#n36 = [0.22,0.26,0.11,0.1896,0.1015,0.1355,0.0858,0.1009,0.0816]
+
+#k =[1,3,5,7,10,20,30,50,100]
+
+#plt.title("Dokładność w zależności od norm")
+#plt.ylabel("Dokładność")
+#plt.xlabel("Norma")
+#plt.bar([i for i in range(1,10)], n3, label="3 klasy")
+#plt.bar([i for i in range(1,10)], n36, label="36 klas")
+#plt.xticks([i for i in range(1,10)])
+#plt.legend(loc="upper right")
+#plt.show()
+
+
+# Wczytanie macierzy konfuzji
+#confmat =  np.loadtxt("macierz.txt",usecols= range(3))
+
+## Obliczenie precision, recall, F1 Score dla każdej klasy
+#n_classes = confmat.shape[0]
+#precision = []
+#recall = []
+#f1 = []
+#for i in range(n_classes):
+#    tp = confmat[i, i]
+#    fp = np.sum(confmat[:, i]) - tp
+#    fn = np.sum(confmat[i, :]) - tp
+#    p = tp / (tp + fp)
+#    r = tp / (tp + fn)
+#    f1_class = 2 * p * r / (p + r) if p + r > 0 else 0
+#    precision.append(p)
+#    recall.append(r)
+#    f1.append(f1_class)
+
+# Obliczenie wagowego F1 Score
+#weighted_f1 = f1_score(y_test, y_pred, average='weighted')
+
+# Wyświetlenie wyników
+#print("Precision:", precision)
+#print("Recall:", recall)
+#print("F1 Score:", f1)
+#print("Weighted F1 Score:", weighted_f1)
 
 """rysowanie macierzy"""
 ##confmat =  np.loadtxt("macierz.txt",usecols= range(3))
@@ -44,34 +104,34 @@ from matplotlib import pyplot as plt
 #plt.show()
 
 """wyświetlenie wszystkich klas"""
-path= os.path.dirname(os.path.abspath(__file__))
+#path= os.path.dirname(os.path.abspath(__file__))
 
-for r in range(20):
-    train_images = []
-    train_labels = [i for i in range(36)]
-    p = Path(path+"\Train")
+#for r in range(20):
+#    train_images = []
+#    train_labels = [i for i in range(36)]
+#    p = Path(path+"\Train")
 
-    dirs = [str(f) for f in p.iterdir() if f.is_dir()]
-    dirs = sorted(dirs, key = lambda x: (int(re.sub('\D','',x)),x))
-    #print(dirs)
-    for dir in dirs:
-        #for file in os.listdir(dir):
-        file = random.choice(os.listdir(dir))
-        image = cv2.imread(os.path.join(dir,file))
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        train_images.append(image)
+#    dirs = [str(f) for f in p.iterdir() if f.is_dir()]
+#    dirs = sorted(dirs, key = lambda x: (int(re.sub('\D','',x)),x))
+#    #print(dirs)
+#    for dir in dirs:
+#        #for file in os.listdir(dir):
+#        file = random.choice(os.listdir(dir))
+#        image = cv2.imread(os.path.join(dir,file))
+#        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+#        train_images.append(image)
 
 
-    plt.figure(figsize=(10,10))
-    for i in range(36):
-        plt.subplot(6,6,i+1)
-        plt.xticks([])
-        plt.yticks([])
-        plt.grid(False)
-        plt.imshow(train_images[i]/255.0)
-        #plt.xlabel(class_names[train_labels[i]])
-        plt.xlabel(f"[{i}]")
-    plt.show()
+#    plt.figure(figsize=(10,10))
+#    for i in range(36):
+#        plt.subplot(6,6,i+1)
+#        plt.xticks([])
+#        plt.yticks([])
+#        plt.grid(False)
+#        plt.imshow(train_images[i]/255.0)
+#        #plt.xlabel(class_names[train_labels[i]])
+#        plt.xlabel(f"[{i}]")
+#    plt.show()
 
 
 

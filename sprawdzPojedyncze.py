@@ -1,11 +1,14 @@
-from PIL import Image
 import os, sys, csv, cv2, random
 import numpy as np
-import pandas as pd
-from matplotlib import pyplot as plt
 from kNN import NearestNeighborClasiffier
 from Linear import LinearClasiffier
 from load_data import load_data, get_classes_num
+import tensorflow as tf
+from tensorflow import keras
+from keras.models import *
+from keras.optimizers import Adam
+from keras import *
+from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score, precision_recall_curve,accuracy_score
 ###
 load_data.N_OF_CLASSES = 36 # 36
 ##
@@ -32,14 +35,19 @@ def load_single(file):
     piksele=[]
     image = cv2.imread(os.path.join(path,file))
     newimage = cv2.resize(image,(32, 32))
-    piksele.append(np.array(newimage).flatten())
+    #piksele.append(np.array(newimage).flatten())
+    piksele.append(np.array(newimage))
     return np.array(piksele)
 
-model = LinearClasiffier(klasy=get_classes_num(), metoda="localsearch",iters=10000,step=0.00001)
-model.wczytaj_model("./Modele/model_36_100000")
+#model = LinearClasiffier(klasy=get_classes_num(), metoda="localsearch",iters=10000,step=0.00001)
+#model.wczytaj_model("./Modele/model_36_100000")
+model = load_model('Modele/nsiec36')
+
 print("start")
 while True:
     inp = str(input())
-    test = load_single("zdjTestowe\\"+inp+".png")
-    prd_idx = int(model.predict(test))
+    X_test = load_single("zdjTestowe\\"+inp+".png")
+    #prd_idx = int(model.predict(X_test))
+    prd_idx = int(np.argmax(model.predict(X_test), axis=-1))
     print(f"Znak {klasa[nadrzedna(prd_idx)]}\nOpis: {opis[prd_idx]}")
+    #print(prd_idx)
