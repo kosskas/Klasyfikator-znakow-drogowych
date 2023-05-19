@@ -30,19 +30,20 @@ from load_data import load_data, get_classes_num
 ##############
 print("liczenie wg k")
 output = []
+n = 2
 for i in [3, 36]:
     load_data.N_OF_CLASSES = i
     print(f"liczba klas = {get_classes_num()}")
     print("wczytywanie")
     train_data, test_data = load_data()
     print("start")
-    for k in [7, 10, 20]:
+    for k in [30, 50, 100]:
         print(f"\n --- i = {i}  k = {k} ---")
-        model = NearestNeighborClasiffier(klasy=i, k=k, norma=1)
+        model = NearestNeighborClasiffier(klasy=i, k=k, norma=n)
         model.train(*train_data)
-        avg,_ = model.evaluate(*test_data)
-        print(f"k={k} n=1 avg={avg}")
-        output.append(f"{k},1,{avg}")
+        avg, _ = model.evaluate(*test_data)
+        print(f"k={k} n={n} avg={avg}")
+        output.append(f"{k},{n},{avg}")
 print("k,n,avg")
 for o in output:
     print(o)
