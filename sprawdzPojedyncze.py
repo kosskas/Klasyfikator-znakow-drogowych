@@ -35,13 +35,14 @@ def load_single(file):
     piksele=[]
     image = cv2.imread(os.path.join(path,file))
     newimage = cv2.resize(image,(32, 32))
-    #piksele.append(np.array(newimage).flatten())
-    piksele.append(np.array(newimage))
+    piksele.append(np.array(newimage).flatten())
+    #piksele.append(np.array(newimage))
     return np.array(piksele)
 
-#model = LinearClasiffier(klasy=get_classes_num(), metoda="localsearch",iters=10000,step=0.00001)
+#model = LinearClasiffier(klasy=get_classes_num(), iters=10000,step=0.00001)
 #model.wczytaj_model("./Modele/model_36_100000")
-model = load_model('Modele/nsiec36')
+#model = load_model('Modele/nsiec36')
+X_train, y_train = load_images("train.csv")
 
 print("start")
 while True:

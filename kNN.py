@@ -39,15 +39,14 @@ class NearestNeighborClasiffier:
         return avg, confmat
 
     def predict(self, X):
-        num_test = X.shape[0]
-        Ypred = np.zeros(num_test, dtype = self.ytr.dtype)
-        for i in range(num_test):
+        y_pred = np.zeros(X.shape[0], dtype = self.ytr.dtype)
+        for i in range(X.shape[0]):
             dist = self.norma(X, i)
-            min_idx = np.argsort(dist)[:self.k] # wez indexy k najblizszych sasiadow
-            zlicz = np.bincount(min_idx) # zlicz wystąpienia
-            min_index = np.argmax(zlicz) # wybierz najczęstrzy index
-            Ypred[i] = self.ytr[min_index] # klasą obj testowego jest klasa najb. sąsiada
-        return Ypred
+            neighbor_idx = np.argsort(dist)[:self.k] # wez indexy k najblizszych sasiadow
+            zlicz = np.bincount(neighbor_idx) # zlicz wystąpienia
+            idx_min = np.argmax(zlicz) # wybierz najczęstrzy index
+            y_pred[i] = self.ytr[idx_min] # klasą obj testowego jest klasa najb. sąsiada
+        return y_pred
 
     def norma(self, X, i):
         return np.power(np.sum(np.power(np.abs(self.Xtr - X[i,:]),self.p),axis = 1),1/self.p)

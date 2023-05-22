@@ -25,7 +25,10 @@
     <Compile Include="kNN.py" />
     <Compile Include="Linear.py" />
     <Compile Include="load_data.py" />
-    <Compile Include="train.py" />
+    <Compile Include="temp.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="main.py" />
     <Compile Include="Network.py">
       <SubType>Code</SubType>
     </Compile>

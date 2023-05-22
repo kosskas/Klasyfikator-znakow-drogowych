@@ -41,9 +41,9 @@ model = load_model('Modele/nsiec36')
 #              metrics=['accuracy'])
 
 
-#history = model.fit(X_train, y_train, epochs=80, #80
+#history = model.fit(X_train, y_train, epochs=25, #80
 #                   validation_data=(X_test, y_test))
-#model.save('Modele/nsiec36')
+#model.save('Modele/nsiec3')
 
 
 _, avg = model.evaluate(X_test, y_test)
@@ -59,10 +59,19 @@ print(f"Precision = {precision}")
 print(f"Recall = {recall}")
 print(f"F1 Score = {f1_score}")
 
-#plt.plot(history.epoch, history.history["loss"], 'g')
+#plt.plot(history.epoch, history.history['accuracy'], 'g', label='Training acc')
+#plt.plot(history.epoch, history.history['val_accuracy'], 'b', label='Validation acc')
+#plt.title("Dokładność w kolejnych epokach")
+#plt.xlabel("Epoki")
+#plt.ylabel("Dokładność")
+#plt.legend()
+#plt.figure()
+#plt.plot(history.epoch, history.history['loss'], 'g', label='Training loss')
+#plt.plot(history.epoch, history.history['val_loss'], 'b', label='Validation loss')
 #plt.title("Wartość funkcji straty w kolejnych epokach")
 #plt.xlabel("Epoki")
 #plt.ylabel("Funkcja straty")
+#plt.legend()
 #plt.show()
 
 #tf.keras.utils.plot_model(model, to_file="36cnn.png", show_shapes=True)
@@ -80,6 +89,9 @@ plt.matshow(norm_mat, cmap=plt.cm.Blues)
 plt.title("Sieć konwolucyjna dla {0} klas\nDokładność = {1:.2%}\n".format(get_classes_num(),avg))
 plt.ylabel("Rzeczywiste klasy")
 plt.xlabel("Przewidywane klasy")
+for i in range(confmat.shape[0]):
+    for j in range(confmat.shape[1]):
+        plt.text(j, i, f"{int(confmat[i, j])}", ha="center", va="center", color="w")
 plt.colorbar(format='%.0f%%')
 plt.clim(0, 100)
 plt.show()
@@ -90,6 +102,12 @@ plt.matshow(norm_mat, cmap=plt.cm.Greys)
 plt.title("Błędy popełnione przy klasyfikacji")
 plt.ylabel("Rzeczywiste klasy")
 plt.xlabel("Przewidywane klasy")
+for i in range(norm_mat.shape[0]):
+    for j in range(norm_mat.shape[1]):
+        if j == i:
+            plt.text(j, i, f"0", ha="center", va="center", color="w")
+        else:
+            plt.text(j, i, f"{int(confmat[i, j])}", ha="center", va="center", color="w")
 plt.colorbar(format='%.1f%%')
 plt.show()
 pred = confmat.diagonal()/confmat.sum(axis=1)

@@ -1,0 +1,49 @@
+3knn1
+acc 0.8107
+Precision = 0.8178
+Recall = 0.8107
+F1 Score = 0.8122
+
+36knn1
+acc 0.2202
+Precision = 0.2579
+Recall = 0.2202
+F1 Score = 0.2232
+
+3knn2
+0.8323
+Precision = 0.8351
+Recall = 0.8323
+F1 Score = 0.8331
+
+36knn2
+0.2621
+Precision = 0.2975
+Recall = 0.2621
+F1 Score = 0.2613
+
+
+3SVM
+0.9729
+Precision = 0.9729
+Recall = 0.9729
+F1 Score = 0.9729
+
+36SVM
+0.6766
+Precision = 0.699
+Recall = 0.6766
+F1 Score = 0.6784
+
+3CNN
+Accuracy: 0.9974
+Precision = 0.9974
+Recall = 0.9974
+F1 Score = 0.9974
+
+36CNN
+Accuracy: 0.9227
+Precision = 0.9304
+Recall = 0.9227
+F1 Score = 0.9236
+

@@ -1,0 +1,10 @@
+Accuracy: 0.9974
+Precision = 0.9974
+Recall = 0.9974
+F1 Score = 0.9974
+3201 1 4
+8 1586 1
+1 0 993
+Klasa [0] = 0.9984
+Klasa [1] = 0.9944
+Klasa [2] = 0.9990
