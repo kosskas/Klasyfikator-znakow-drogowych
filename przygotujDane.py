@@ -20,17 +20,17 @@ from load_data import load_data, get_classes_num,load_images
 
 
 """precision, recall, f1_score, accuracy"""
-#def prf1a(confmat):
-#    true_positives = np.diag(confmat)
-#    false_positives = np.sum(confmat, axis=1) - true_positives
-#    false_negatives = np.sum(confmat, axis=0) - true_positives
+def prf1a(confmat):
+    true_positives = np.diag(confmat)
+    false_positives = np.sum(confmat, axis=1) - true_positives
+    false_negatives = np.sum(confmat, axis=0) - true_positives
     
-#    precision = round(np.mean(true_positives / (true_positives + false_positives)),4)
-#    recall = round(np.mean(true_positives / (true_positives + false_negatives)),4)
-#    f1_score = round(np.mean(2 * (precision * recall) / (precision + recall)),4)
-#    accuracy = round(np.sum(true_positives) / np.sum(confmat),4)
+    precision = round(np.mean(true_positives / (true_positives + false_positives)),4)
+    recall = round(np.mean(true_positives / (true_positives + false_negatives)),4)
+    f1_score = round(np.mean(2 * (precision * recall) / (precision + recall)),4)
+    accuracy = round(np.sum(true_positives) / np.sum(confmat),4)
     
-#    return precision, recall, f1_score, accuracy
+    return precision, recall, f1_score, accuracy
 
 #confmat = np.loadtxt("macierz.txt",usecols= range(36))
 #precision, recall, f1_score, accuracy = prf1a(confmat)

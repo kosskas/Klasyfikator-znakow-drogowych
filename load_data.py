@@ -33,6 +33,13 @@ def load_data():
     #X_test, y_test = load_images("jeden.csv")
     X_train = X_train.reshape(X_train.shape[0], 32 * 32 * 3) # zamiast listy macierzy, lista wektorów jednowymiarowych
     X_test = X_test.reshape(X_test.shape[0], 32 * 32 * 3) 
+    
+    avg_x = np.average(X_train)
+    odch_x = np.std(X_train)
+
+    X_train = (X_train - avg_x) / odch_x
+    X_test = (X_test - avg_x) / odch_x
+
     return (X_train, y_train), (X_test, y_test)
 
 def load_to_network():

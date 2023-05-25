@@ -26,7 +26,7 @@ class LinearClasiffier:
     def train(self, Xtrain, Ytrain, X_test, y_test):
         Xtrain = np.concatenate((Xtrain, np.ones((Xtrain.shape[0], 1))), axis=1).T #dodanie na koniec jedynek i transpozycja (bias trick)
         X_test = np.concatenate((X_test, np.ones((X_test.shape[0], 1))), axis=1).T
-        bestloss = float("inf")
+        bestloss = loss_fun(Xtrain, Ytrain, self.W)
         for i in range(self.iters):
             tempW = self.W + np.random.randn(self.__CLASS_NUM__, 3073) * self.step # poruszaj się po sąsiedztwie
             loss = loss_fun(Xtrain, Ytrain, tempW) # oblicz stratę
@@ -44,7 +44,30 @@ class LinearClasiffier:
             
             if i % 100 == 0:
                 print('iteracja {0}, strata {1}, najlepsza {2}'.format(i, loss, bestloss))
-        
+
+    def train2(self, Xtrain, Ytrain, X_test, y_test):
+        Xtrain = np.concatenate((Xtrain, np.ones((Xtrain.shape[0], 1))), axis=1).T
+        X_test = np.concatenate((X_test, np.ones((X_test.shape[0], 1))), axis=1).T
+        loss = loss_fun(Xtrain, Ytrain, self.W)
+        df = gradient(Xtrain, Ytrain, self.W)
+        for i in range(self.iters):
+
+            self.W = self.W - df * self.step
+
+            loss = loss_fun(Xtrain, Ytrain, self.W) # oblicz stratę
+            df = gradient(Xtrain, Ytrain, self.W) # oblicz grad
+            #if i % 100 == 0:
+            print('iteracja {0}, strata {1}'.format(i, loss))
+
+            valLoss = loss_fun(X_test, y_test, self.W)
+            accT = self.predIter(Xtrain, Ytrain)
+            accV = self.predIter(X_test, y_test)
+            self.licz.append(i)
+            self.accTr.append(accT)
+            self.accVal.append(accV)
+            self.strata.append(loss)
+            self.strataVal.append(valLoss)  
+
     def evaluate(self, X_test, y_test):
         y_pred = self.predict(X_test)
         avg = round(np.mean(y_pred == y_test),4)
@@ -88,29 +111,27 @@ class LinearClasiffier:
         with open(f'{nazwa}.npy', 'rb') as f:
             self.W = np.load(f)
 
-    def train(self, Xtrain, Ytrain, X_test, y_test):
-        Xtrain = np.concatenate((Xtrain, np.ones((Xtrain.shape[0], 1))), axis=1).T #dodanie na koniec jedynek i transpozycja (bias trick)
-        X_test = np.concatenate((X_test, np.ones((X_test.shape[0], 1))), axis=1).T
-        bestloss = float("inf")
-        for i in range(self.iters):
-            tempW = self.W + np.random.randn(self.__CLASS_NUM__, 3073) * self.step # poruszaj się po sąsiedztwie
-            loss = loss_fun(Xtrain, Ytrain, tempW) # oblicz stratę
-            if loss < bestloss: # sprawdz czy zmalała
-                self.W = tempW 
-                bestloss = loss        
-            valLoss = loss_fun(X_test, y_test, tempW)
-            accT = self.predIter(Xtrain, Ytrain)
-            accV = self.predIter(X_test, y_test)
-            self.licz.append(i)
-            self.accTr.append(accT)
-            self.accVal.append(accV)
-            self.strata.append(loss)
-            self.strataVal.append(valLoss)
 
 def loss_fun(X, y, W):
-    scores = W.dot(X) # oblicz scores dla bieżących wag
+    num_examples = X.shape[1]
+    # oblicz scores dla bieżących wag
+    scores = W.dot(X) 
     # poprawny wynik powinien być większy niż suma niepoprawnych
     # hard margin
-    margins = np.maximum(0, scores - scores[y, np.arange(X.shape[1])] + 1) # hinge loss
-    margins[y, np.arange(X.shape[1])] = 0     # poprawne pomiń
-    return np.sum(margins) / X.shape[1] # zwróć srednią wszystkich strat
+    margins = np.maximum(0, scores - scores[y, np.arange(num_examples)] + 1) # hinge loss
+    margins[y, np.arange(num_examples)] = 0     # poprawne pomiń
+    return np.sum(margins) / num_examples # zwróć srednią wszystkich strat
+
+def gradient(X, y, W):
+    ###
+    num_examples = X.shape[1]    
+    scores = W.dot(X) 
+    margins = np.maximum(0, scores - scores[y, np.arange(num_examples)] + 1)
+    margins[y, np.arange(num_examples)] = 0
+    ## to samo co loss fun
+    # gradient dla marginesów
+    margins_grad = np.where(margins > 0, 1, 0)
+    margins_grad[y, np.arange(num_examples)] = -np.sum(margins_grad, axis=0)
+    # gradient dla wag
+    dW = margins_grad.dot(X.T) / num_examples
+    return dW

@@ -6,7 +6,7 @@ from load_data import load_data, get_classes_num
 import pickle, json
 
 ###
-load_data.N_OF_CLASSES = 3#36
+load_data.N_OF_CLASSES = 36#36
 #
 
 def zapisz(nazwa, obj):
@@ -19,82 +19,103 @@ def wczytaj(nazwa,obj):
         obj = pickle.load(f)
     return obj
 
-#print(f"liczba klas = {get_classes_num()}")
-#print("wczytywanie")
-#train_data, test_data = load_data()
-#print("start")
+print(f"liczba klas = {get_classes_num()}")
+print("wczytywanie")
+train_data, test_data = load_data()
+print("start")
 
 ###model = NearestNeighborClasiffier(klasy=get_classes_num(),norma = 2, k = 1)
+##model = LinearClasiffier(klasy=get_classes_num(), iters=1000,step=0.01)
 
-#model = LinearClasiffier(klasy=get_classes_num(), iters=10000,step=0.00001)
-##model.wczytaj_model("./Modele/model_3_10000_NEW")
-#model.train(*train_data,*test_data)
-#avg,confmat = model.evaluate(*test_data)
+model = LinearClasiffier(klasy=get_classes_num(), iters=100000,step=0.000001)
 
+#model.wczytaj_model("./Modele/model_3_10000_NEW")
 
-#i, ls, vls = model.get_loss()
-#i, aTr, aVl = model.get_acc()
+model.train(*train_data,*test_data)
+avg,confmat = model.evaluate(*test_data)
+
+model.zapisz_model("lin36_100000_LS")
+
+i, ls, vls = model.get_loss()
+i, aTr, aVl = model.get_acc()
 
 #i, ls, vls = [],[],[]
 #i, aTr, aVl = [],[],[]
-#i = wczytaj("iters", i)
-#ls = wczytaj("trloss", ls)
-#vls = wczytaj("valloss", vls)
-#aTr = wczytaj("accTrain", aTr)
-#aVl = wczytaj("accTest", aVl)
 
-#plt.plot(i, ls, label="Zbiór treningowy")
-#plt.plot(i, vls, label="Zbiór testowy")
-#plt.title("Wartość funkcji straty w kolejnych iteracjach")
-#plt.ylabel("Strata")
-#plt.xlabel("Iteracje")
-#plt.legend(loc="upper right")
-#plt.show()
+i = wczytaj("iters", i)
+ls = wczytaj("trloss2", ls)
+vls = wczytaj("valloss2", vls)
+aTr = wczytaj("accTrain2", aTr)
+aVl = wczytaj("accTest2", aVl)
 
-#plt.figure()
+plt.plot(i, ls, label="Zbiór treningowy")
+plt.plot(i, vls, label="Zbiór testowy")
+plt.title("Wartość funkcji straty w kolejnych iteracjach")
+plt.ylabel("Strata")
+plt.xlabel("Iteracje")
+plt.legend(loc="upper right")
+plt.show()
 
-#plt.plot(i, aTr,label="Zbiór treningowy")
-#plt.plot(i, aVl, label="Zbiór testowy")
-#plt.title("Dokładność kolejnych iteracjach")
-#plt.ylabel("Dokładność")
-#plt.xlabel("Iteracje")
-#plt.legend(loc="lower right")
-#plt.show()
+plt.figure()
 
-#model.zapisz_model("model_3_10000_NEW")
+plt.plot(i, aTr,label="Zbiór treningowy")
+plt.plot(i, aVl, label="Zbiór testowy")
+plt.title("Dokładność kolejnych iteracjach")
+plt.ylabel("Dokładność")
+plt.xlabel("Iteracje")
+plt.legend(loc="lower right")
+plt.show()
 
-#row_sums=confmat.sum(axis=1,keepdims=True)
-#norm_mat=confmat/row_sums
-#norm_mat*=100
 
-#plt.matshow(norm_mat, cmap=plt.cm.Blues)
-#plt.title("Klasyfikator liniowy dla {0} klas\nDokładność = {1:.2%}\n".format(get_classes_num(),avg))
-##plt.title("Klasyfikator kNN dla {0} klas\nDokładność = {1}%\n".format(get_classes_num(),avg*100))
-#plt.ylabel("Rzeczywiste klasy")
-#plt.xlabel("Przewidywane klasy")
+
+row_sums=confmat.sum(axis=1,keepdims=True)
+norm_mat=confmat/row_sums
+norm_mat*=100
+
+plt.matshow(norm_mat, cmap=plt.cm.Blues)
+plt.title("Klasyfikator liniowy dla {0} klas\nDokładność = {1:.2%}\n".format(get_classes_num(),avg))
+#plt.title("Klasyfikator kNN dla {0} klas\nDokładność = {1}%\n".format(get_classes_num(),avg*100))
+plt.ylabel("Rzeczywiste klasy")
+plt.xlabel("Przewidywane klasy")
 #for i in range(confmat.shape[0]):
 #    for j in range(confmat.shape[1]):
 #        plt.text(j, i, f"{int(confmat[i, j])}", ha="center", va="center", color="w")
-#plt.colorbar(format='%.0f%%')
-#plt.clim(0, 100)
-#plt.show()
+plt.colorbar(format='%.0f%%')
+plt.clim(0, 100)
+plt.show()
 
 
-#np.fill_diagonal(norm_mat,0)
-#plt.matshow(norm_mat, cmap=plt.cm.Greys)
-#plt.title("Błędy popełnione przy klasyfikacji")
-#plt.ylabel("Rzeczywiste klasy")
-#plt.xlabel("Przewidywane klasy")
+np.fill_diagonal(norm_mat,0)
+plt.matshow(norm_mat, cmap=plt.cm.Greys)
+plt.title("Błędy popełnione przy klasyfikacji")
+plt.ylabel("Rzeczywiste klasy")
+plt.xlabel("Przewidywane klasy")
 #for i in range(norm_mat.shape[0]):
 #    for j in range(norm_mat.shape[1]):
 #        if j == i:
 #            plt.text(j, i, f"0", ha="center", va="center", color="w")
 #        else:
 #            plt.text(j, i, f"{int(confmat[i, j])}", ha="center", va="center", color="w")
-#plt.colorbar(format='%.2f%%')
-#plt.show()
+plt.colorbar(format='%.2f%%')
+plt.show()
 
+def prf1a(confmat):
+    true_positives = np.diag(confmat)
+    false_positives = np.sum(confmat, axis=1) - true_positives
+    false_negatives = np.sum(confmat, axis=0) - true_positives
+    
+    precision = round(np.mean(true_positives / (true_positives + false_positives)),4)
+    recall = round(np.mean(true_positives / (true_positives + false_negatives)),4)
+    f1_score = round(np.mean(2 * (precision * recall) / (precision + recall)),4)
+    accuracy = round(np.sum(true_positives) / np.sum(confmat),4)
+    
+    return precision, recall, f1_score, accuracy
 
+precision, recall, f1_score, accuracy = prf1a(confmat)
+print("Dokładność:", accuracy)
+print("Precyzja:", precision)
+print("Zwrot:", recall)
+print("Miara F1:", f1_score)
 
 ###############
 #print("liczenie wg k")
