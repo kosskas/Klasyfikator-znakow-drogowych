@@ -39,3 +39,20 @@ def load_to_network():
     X_train, y_train = load_images("train.csv",to_net =True)
     X_test, y_test = load_images("test.csv", to_net =True)
     return (X_train, y_train), (X_test, y_test)
+
+def zapisz(macierz,nazwa):
+    with open(f'{nazwa}.npy', 'wb') as f:
+        np.save(f, macierz)
+
+def wczytaj(macierz,nazwa):
+    with open(f'{nazwa}.npy', 'rb') as f:
+        macierz = np.load(f)
+    return macierz
+
+def loadFast():
+    X_train, y_train = None, None
+    with open(f'XTRAIN.npy', 'rb') as f:
+        X_train = np.load(f)
+    with open(f'YTRAIN.npy', 'rb') as f:
+        y_train = np.load(f)
+    return (X_train, y_train)

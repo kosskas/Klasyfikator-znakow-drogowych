@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import os, cv2, random, time
 from matplotlib import pyplot as plt
-from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score, precision_recall_curve,accuracy_score
+from sklearn.metrics import confusion_matrix
 from load_data import get_classes_num
 
 class LinearClasiffier: 
@@ -16,21 +16,32 @@ class LinearClasiffier:
             self.step = 0.0001
         else:
             self.step = step
-
-    def train(self, Xtrain, Ytrain):
-        Xtrain = np.concatenate((Xtrain, np.ones((Xtrain.shape[0], 1))), axis=1).T #dodanie na koniec jedynek i transpozycja
-        self.W = np.random.randn(self.__CLASS_NUM__, 3073) * self.step
-        bestloss = float("inf")
+        self.W = np.random.randn(self.__CLASS_NUM__, 3073) * self.step #inicjalizuj w losowym miejscu
         self.licz = []
         self.strata = []
+        self.strataVal = []
+        self.accTr = []
+        self.accVal = []
+
+    def train(self, Xtrain, Ytrain, X_test, y_test):
+        Xtrain = np.concatenate((Xtrain, np.ones((Xtrain.shape[0], 1))), axis=1).T #dodanie na koniec jedynek i transpozycja (bias trick)
+        X_test = np.concatenate((X_test, np.ones((X_test.shape[0], 1))), axis=1).T
+        bestloss = float("inf")
         for i in range(self.iters):
-            tempW = self.W + np.random.randn(self.__CLASS_NUM__, 3073) * self.step
-            loss = loss_fun(Xtrain, Ytrain, tempW)
-            if loss < bestloss:
-                self.W = tempW
-                bestloss = loss            
+            tempW = self.W + np.random.randn(self.__CLASS_NUM__, 3073) * self.step # poruszaj się po sąsiedztwie
+            loss = loss_fun(Xtrain, Ytrain, tempW) # oblicz stratę
+            if loss < bestloss: # sprawdz czy zmalała
+                self.W = tempW 
+                bestloss = loss        
+            valLoss = loss_fun(X_test, y_test, tempW)
+            accT = self.predIter(Xtrain, Ytrain)
+            accV = self.predIter(X_test, y_test)
             self.licz.append(i)
+            self.accTr.append(accT)
+            self.accVal.append(accV)
             self.strata.append(loss)
+            self.strataVal.append(valLoss)
+            
             if i % 100 == 0:
                 print('iteracja {0}, strata {1}, najlepsza {2}'.format(i, loss, bestloss))
         
@@ -39,13 +50,6 @@ class LinearClasiffier:
         avg = round(np.mean(y_pred == y_test),4)
         print(f"{avg}")
         confmat = confusion_matrix(y_test,y_pred)
-
-        precision = round(precision_score(y_test, y_pred,average='weighted'),4)
-        recall = round(recall_score(y_test, y_pred,average='weighted'),4)
-        f1 = round(f1_score(y_test, y_pred,average='weighted'),4)
-        print(f"Precision = {precision}")
-        print(f"Recall = {recall}")
-        print(f"F1 Score = {f1}")
 
         pred = confmat.diagonal()/confmat.sum(axis=1)
         for i in range(confmat.shape[0]):
@@ -62,8 +66,16 @@ class LinearClasiffier:
         ypred = np.argmax(scores, axis= 0) # index pod największym wynikiem
         return ypred
 
+    def predIter(self, X_test, y_test):
+        scores = self.W.dot(X_test) 
+        y_pred = np.argmax(scores, axis= 0)
+        return round(np.mean(y_pred == y_test),4)
+
     def get_loss(self):
-        return self.licz, self.strata
+        return self.licz, self.strata, self.strataVal
+
+    def get_acc(self):
+        return self.licz, self.accTr, self.accVal
 
     def get_wagi(self):
         return self.W
@@ -76,8 +88,29 @@ class LinearClasiffier:
         with open(f'{nazwa}.npy', 'rb') as f:
             self.W = np.load(f)
 
+    def train(self, Xtrain, Ytrain, X_test, y_test):
+        Xtrain = np.concatenate((Xtrain, np.ones((Xtrain.shape[0], 1))), axis=1).T #dodanie na koniec jedynek i transpozycja (bias trick)
+        X_test = np.concatenate((X_test, np.ones((X_test.shape[0], 1))), axis=1).T
+        bestloss = float("inf")
+        for i in range(self.iters):
+            tempW = self.W + np.random.randn(self.__CLASS_NUM__, 3073) * self.step # poruszaj się po sąsiedztwie
+            loss = loss_fun(Xtrain, Ytrain, tempW) # oblicz stratę
+            if loss < bestloss: # sprawdz czy zmalała
+                self.W = tempW 
+                bestloss = loss        
+            valLoss = loss_fun(X_test, y_test, tempW)
+            accT = self.predIter(Xtrain, Ytrain)
+            accV = self.predIter(X_test, y_test)
+            self.licz.append(i)
+            self.accTr.append(accT)
+            self.accVal.append(accV)
+            self.strata.append(loss)
+            self.strataVal.append(valLoss)
+
 def loss_fun(X, y, W):
-    scores = W.dot(X)
-    margins = np.maximum(0, scores - scores[y, np.arange(X.shape[1])] + 1)
-    margins[y, np.arange(X.shape[1])] = 0 
-    return np.sum(margins) / X.shape[1]
+    scores = W.dot(X) # oblicz scores dla bieżących wag
+    # poprawny wynik powinien być większy niż suma niepoprawnych
+    # hard margin
+    margins = np.maximum(0, scores - scores[y, np.arange(X.shape[1])] + 1) # hinge loss
+    margins[y, np.arange(X.shape[1])] = 0     # poprawne pomiń
+    return np.sum(margins) / X.shape[1] # zwróć srednią wszystkich strat

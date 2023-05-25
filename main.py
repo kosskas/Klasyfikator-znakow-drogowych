@@ -3,30 +3,72 @@ from matplotlib import pyplot as plt
 from kNN import NearestNeighborClasiffier
 from Linear import LinearClasiffier
 from load_data import load_data, get_classes_num
-
+import pickle, json
 
 ###
-load_data.N_OF_CLASSES = 36#36
+load_data.N_OF_CLASSES = 3#36
 #
-print(f"liczba klas = {get_classes_num()}")
-print("wczytywanie")
-train_data, test_data = load_data()
-print("start")
 
-#model = NearestNeighborClasiffier(klasy=get_classes_num(),norma = 2, k = 1)
+def zapisz(nazwa, obj):
+    with open(f'{nazwa}', 'wb') as f:
+        pickle.dump(obj, f)
+    return obj
 
-model = LinearClasiffier(klasy=get_classes_num(), iters=5,step=0.0001)
-model.wczytaj_model("./Modele/model_36_100000")
-#model.train(*train_data)
-avg,confmat = model.evaluate(*test_data)
-#model.zapisz_model("nowy_model")
+def wczytaj(nazwa,obj):
+    with open(f'{nazwa}', 'rb') as f:
+        obj = pickle.load(f)
+    return obj
+
+#print(f"liczba klas = {get_classes_num()}")
+#print("wczytywanie")
+#train_data, test_data = load_data()
+#print("start")
+
+###model = NearestNeighborClasiffier(klasy=get_classes_num(),norma = 2, k = 1)
+
+#model = LinearClasiffier(klasy=get_classes_num(), iters=10000,step=0.00001)
+##model.wczytaj_model("./Modele/model_3_10000_NEW")
+#model.train(*train_data,*test_data)
+#avg,confmat = model.evaluate(*test_data)
+
+
+#i, ls, vls = model.get_loss()
+#i, aTr, aVl = model.get_acc()
+
+#i, ls, vls = [],[],[]
+#i, aTr, aVl = [],[],[]
+#i = wczytaj("iters", i)
+#ls = wczytaj("trloss", ls)
+#vls = wczytaj("valloss", vls)
+#aTr = wczytaj("accTrain", aTr)
+#aVl = wczytaj("accTest", aVl)
+
+#plt.plot(i, ls, label="Zbiór treningowy")
+#plt.plot(i, vls, label="Zbiór testowy")
+#plt.title("Wartość funkcji straty w kolejnych iteracjach")
+#plt.ylabel("Strata")
+#plt.xlabel("Iteracje")
+#plt.legend(loc="upper right")
+#plt.show()
+
+#plt.figure()
+
+#plt.plot(i, aTr,label="Zbiór treningowy")
+#plt.plot(i, aVl, label="Zbiór testowy")
+#plt.title("Dokładność kolejnych iteracjach")
+#plt.ylabel("Dokładność")
+#plt.xlabel("Iteracje")
+#plt.legend(loc="lower right")
+#plt.show()
+
+#model.zapisz_model("model_3_10000_NEW")
 
 #row_sums=confmat.sum(axis=1,keepdims=True)
 #norm_mat=confmat/row_sums
 #norm_mat*=100
 
 #plt.matshow(norm_mat, cmap=plt.cm.Blues)
-##plt.title("Klasyfikator liniowy dla {0} klas\nDokładność = {1:.2%}\n".format(get_classes_num(),avg))
+#plt.title("Klasyfikator liniowy dla {0} klas\nDokładność = {1:.2%}\n".format(get_classes_num(),avg))
 ##plt.title("Klasyfikator kNN dla {0} klas\nDokładność = {1}%\n".format(get_classes_num(),avg*100))
 #plt.ylabel("Rzeczywiste klasy")
 #plt.xlabel("Przewidywane klasy")

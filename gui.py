@@ -10,7 +10,7 @@ import os, sys, csv, cv2, random
 import numpy as np
 from Linear import LinearClasiffier
 from kNN import NearestNeighborClasiffier
-from load_data import load_data, get_classes_num, load_images
+from load_data import load_data, get_classes_num, load_images, loadFast
 
 load_data.N_OF_CLASSES = 36 # 36
 
@@ -76,7 +76,7 @@ window_height = 600
 
 # linear_classifier
 print("loading linear_classifier_model...")
-linear_classifier_model = LinearClasiffier(klasy=get_classes_num(), metoda="localsearch", iters=10000, step=0.00001)
+linear_classifier_model = LinearClasiffier(klasy=get_classes_num(), iters=10000, step=0.00001)
 linear_classifier_model.wczytaj_model("Modele/model_36_100000")
 print("done")
 
@@ -87,7 +87,7 @@ print("done")
 
 # kNN
 print("loading kNN_model...")
-x_train, y_train = load_images("train.csv")
+x_train, y_train = loadFast()
 kNN_model = NearestNeighborClasiffier(klasy=get_classes_num(), norma=2, k=1)
 kNN_model.train(x_train, y_train)
 print("done")

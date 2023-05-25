@@ -1,10 +1,6 @@
 import numpy as np
 import pandas as pd
-from PIL import Image
-import os, cv2, random, time
-from collections import Counter
-from matplotlib import pyplot as plt
-from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score, precision_recall_curve,accuracy_score
+from sklearn.metrics import confusion_matrix
 
 class NearestNeighborClasiffier:
     def __init__(self,klasy,k, norma):
@@ -13,22 +9,15 @@ class NearestNeighborClasiffier:
         self.k = k
 
     def train(self, X, y):
-        self.Xtr = X
-        self.ytr = y
+        self.X_train = X
+        self.y_train = y
 
     def evaluate(self, X, y):
-        Y_predict = self.predict(X)
-        avg = round(np.mean(Y_predict == y),4)
+        y_predict = self.predict(X)
+        avg = round(np.mean(y_predict == y),4)
         print(f"{avg}")
-        precision = round(precision_score(y, Y_predict,average='weighted'),4)
-        recall = round(recall_score(y, Y_predict,average='weighted'),4)
-        f1 = round(f1_score(y, Y_predict,average='weighted'),4)
 
-        print(f"Precision = {precision}")
-        print(f"Recall = {recall}")
-        print(f"F1 Score = {f1}")
-
-        confmat = confusion_matrix(y,Y_predict)
+        confmat = confusion_matrix(y,y_predict)
         pred = confmat.diagonal()/confmat.sum(axis=1)
         for i in range(confmat.shape[0]):
             for j in range(confmat.shape[1]):
@@ -39,36 +28,14 @@ class NearestNeighborClasiffier:
         return avg, confmat
 
     def predict(self, X):
-        y_pred = np.zeros(X.shape[0], dtype = self.ytr.dtype)
+        y_pred = np.zeros(X.shape[0], dtype = self.y_train.dtype)
         for i in range(X.shape[0]):
             dist = self.norma(X, i)
             neighbor_idx = np.argsort(dist)[:self.k] # wez indexy k najblizszych sasiadow
             zlicz = np.bincount(neighbor_idx) # zlicz wystąpienia
-            idx_min = np.argmax(zlicz) # wybierz najczęstrzy index
-            y_pred[i] = self.ytr[idx_min] # klasą obj testowego jest klasa najb. sąsiada
+            idx_min = np.argmax(zlicz) # wybierz najczęstszy index
+            y_pred[i] = self.y_train[idx_min] # klasą obj testowego jest klasa najb. sąsiada
         return y_pred
 
     def norma(self, X, i):
-        return np.power(np.sum(np.power(np.abs(self.Xtr - X[i,:]),self.p),axis = 1),1/self.p)
-
-##KNN###
-##najlepsze k crosswalidacja
-#valid = []
-#Xtr, Ytr = train_data
-#D = [Xtr[i:i+4000] for i in range(0, 5)]
-#T = [Ytr[i:i+4000] for i in range(0,5)]
-#for k in [1, 3, 5, 10, 20, 50, 100]:
-#    #print(k)
-#    for i in range(0, 5):
-#        #print([i%5 for i in range(i, i+4)], (i+4)%5)
-#        XTrData = np.concatenate([D[i%5] for i in range(i, i+4)])
-#        YTrVal = np.concatenate([T[i%5] for i in range(i, i+4)])
-#        TestData = D[(i+4)%5]
-#        TestVal = T[(i+4)%5]
-#        nn = NearestNeighborClasiffier(norma = 2) 
-#        nn.train(XTrData, YTrVal)
-#        Yte_predict = nn.predict(TestData, k)
-#        sre = np.mean(Yte_predict == TestVal)
-#        print((k,[i%5 for i in range(i, i+4)],(i+4)%5, sre ))
-#        valid.append( (k,[i%5 for i in range(i, i+4)],(i+4)%5, sre ) )
-#print(valid)
+        return np.power(np.sum(np.power(np.abs(self.X_train - X[i,:]),self.p),axis = 1),1/self.p)
