@@ -27,7 +27,8 @@ print("start")
 ###model = NearestNeighborClasiffier(klasy=get_classes_num(),norma = 2, k = 1)
 ##model = LinearClasiffier(klasy=get_classes_num(), iters=1000,step=0.01)
 
-model = LinearClasiffier(klasy=get_classes_num(), iters=100000,step=0.000001)
+model = LinearClasiffier(klasy=get_classes_num(), iters=100000, step=0.000001)
+
 
 #model.wczytaj_model("./Modele/model_3_10000_NEW")
 
@@ -42,11 +43,11 @@ i, aTr, aVl = model.get_acc()
 #i, ls, vls = [],[],[]
 #i, aTr, aVl = [],[],[]
 
-i = wczytaj("iters", i)
-ls = wczytaj("trloss2", ls)
-vls = wczytaj("valloss2", vls)
-aTr = wczytaj("accTrain2", aTr)
-aVl = wczytaj("accTest2", aVl)
+i = zapisz("iters", i)
+ls = zapisz("trloss2", ls)
+vls = zapisz("valloss2", vls)
+aTr = zapisz("accTrain2", aTr)
+aVl = zapisz("accTest2", aVl)
 
 plt.plot(i, ls, label="Zbiór treningowy")
 plt.plot(i, vls, label="Zbiór testowy")
@@ -103,7 +104,7 @@ def prf1a(confmat):
     true_positives = np.diag(confmat)
     false_positives = np.sum(confmat, axis=1) - true_positives
     false_negatives = np.sum(confmat, axis=0) - true_positives
-    
+
     precision = round(np.mean(true_positives / (true_positives + false_positives)),4)
     recall = round(np.mean(true_positives / (true_positives + false_negatives)),4)
     f1_score = round(np.mean(2 * (precision * recall) / (precision + recall)),4)
