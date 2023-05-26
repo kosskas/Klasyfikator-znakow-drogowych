@@ -25,16 +25,16 @@ train_data, test_data = load_data()
 print("start")
 
 ###model = NearestNeighborClasiffier(klasy=get_classes_num(),norma = 2, k = 1)
-##model = LinearClasiffier(klasy=get_classes_num(), iters=1000,step=0.01)
+model = LinearClasiffier(klasy=get_classes_num(), iters=10000,step=0.001)
 
-model = LinearClasiffier(klasy=get_classes_num(), iters=100000,step=0.000001)
+#model = LinearClasiffier(klasy=get_classes_num(), iters=1000,step=0.0001)
 
 #model.wczytaj_model("./Modele/model_3_10000_NEW")
 
 model.train(*train_data,*test_data)
 avg,confmat = model.evaluate(*test_data)
 
-model.zapisz_model("lin36_100000_LS")
+model.zapisz_model("modelLS36")
 
 i, ls, vls = model.get_loss()
 i, aTr, aVl = model.get_acc()
@@ -42,18 +42,23 @@ i, aTr, aVl = model.get_acc()
 #i, ls, vls = [],[],[]
 #i, aTr, aVl = [],[],[]
 
-i = wczytaj("iters", i)
-ls = wczytaj("trloss2", ls)
-vls = wczytaj("valloss2", vls)
-aTr = wczytaj("accTrain2", aTr)
-aVl = wczytaj("accTest2", aVl)
+i = zapisz("iters", i)
+ls = zapisz("trloss2", ls)
+vls = zapisz("valloss2", vls)
+aTr = zapisz("accTrain2", aTr)
+aVl = zapisz("accTest2", aVl)
 
-plt.plot(i, ls, label="Zbiór treningowy")
-plt.plot(i, vls, label="Zbiór testowy")
+plt.plot(i, ls,'b',label="Zbiór treningowy")
 plt.title("Wartość funkcji straty w kolejnych iteracjach")
 plt.ylabel("Strata")
 plt.xlabel("Iteracje")
-plt.legend(loc="upper right")
+plt.show()
+
+plt.plot(i, vls,'r',label="Zbiór testowy")
+plt.title("Wartość funkcji straty w kolejnych iteracjach")
+plt.ylabel("Strata")
+plt.xlabel("Iteracje")
+#plt.legend(loc="upper right")
 plt.show()
 
 plt.figure()
