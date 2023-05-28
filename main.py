@@ -25,7 +25,7 @@ train_data, test_data = load_data()
 print("start")
 
 ###model = NearestNeighborClasiffier(klasy=get_classes_num(),norma = 2, k = 1)
-model = LinearClasiffier(klasy=get_classes_num(), iters=10000,step=0.001)
+model = LinearClasiffier(klasy=get_classes_num(), iters=10000,step=0.0001)
 
 #model = LinearClasiffier(klasy=get_classes_num(), iters=1000,step=0.0001)
 

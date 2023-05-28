@@ -14,25 +14,25 @@ from keras import *
 from load_data import load_data, get_classes_num,load_images
 ### Nie uruchamiać ruszać! ###
 """To jest  plik używany wyłącznie do konfiguracji danych """
-
-
-
+model = load_model('Modele/4nsiec36')
+model.summary()
+tf.keras.utils.plot_model(model, to_file="CNN.png", show_shapes=True)
 
 
 """precision, recall, f1_score, accuracy"""
-def prf1a(confmat):
-    true_positives = np.diag(confmat)
-    false_positives = np.sum(confmat, axis=1) - true_positives
-    false_negatives = np.sum(confmat, axis=0) - true_positives
+#def prf1a(confmat):
+#    true_positives = np.diag(confmat)
+#    false_positives = np.sum(confmat, axis=1) - true_positives
+#    false_negatives = np.sum(confmat, axis=0) - true_positives
     
-    precision = round(np.mean(true_positives / (true_positives + false_positives)),4)
-    recall = round(np.mean(true_positives / (true_positives + false_negatives)),4)
-    f1_score = round(np.mean(2 * (precision * recall) / (precision + recall)),4)
-    accuracy = round(np.sum(true_positives) / np.sum(confmat),4)
+#    precision = round(np.mean(true_positives / (true_positives + false_positives)),4)
+#    recall = round(np.mean(true_positives / (true_positives + false_negatives)),4)
+#    f1_score = round(np.mean(2 * (precision * recall) / (precision + recall)),4)
+#    accuracy = round(np.sum(true_positives) / np.sum(confmat),4)
     
-    return precision, recall, f1_score, accuracy
+#    return precision, recall, f1_score, accuracy
 
-#confmat = np.loadtxt("macierz.txt",usecols= range(36))
+#confmat = np.loadtxt("macierz.txt",usecols= range(3))
 #precision, recall, f1_score, accuracy = prf1a(confmat)
 #print("Dokładność:", accuracy)
 #print("Precyzja:", precision)
@@ -63,35 +63,35 @@ def prf1a(confmat):
 #tf.keras.utils.plot_model(model, to_file="36cnn.png", show_shapes=True)
 
 """wykres k"""
-k =[1,3,5,7,10,20,30,50,100]
+#k =[1,3,5,7,10,20,30,50,100]
 
-avg3n1 =[0.81,0.8,0.79,0.7717,0.7646,0.7375,0.716,0.6754,0.6129]
-avg3n2 =[0.83,0.8183,0.8093,0.7983,0.7907,0.7522,0.7199,0.6906,0.6328]
+#avg3n1 =[0.81,0.8,0.79,0.7717,0.7646,0.7375,0.716,0.6754,0.6129]
+#avg3n2 =[0.83,0.8183,0.8093,0.7983,0.7907,0.7522,0.7199,0.6906,0.6328]
 
 
-avg36n1=[0.22,0.21,0.2,0.1853,0.171,0.1489,0.1446,0.1282,0.1125]
-avg36n2 = [0.26,0.2393,0.2293,0.2155,0.2045,0.1758,0.177,0.1477,0.112]
+#avg36n1=[0.22,0.21,0.2,0.1853,0.171,0.1489,0.1446,0.1282,0.1125]
+#avg36n2 = [0.26,0.2393,0.2293,0.2155,0.2045,0.1758,0.177,0.1477,0.112]
 
-n3 = [0.81,0.83,0.61,0.7263,0.5978,0.6043,0.4478,0.567,0.5275]
+#n3 = [0.81,0.83,0.61,0.7263,0.5978,0.6043,0.4478,0.567,0.5275]
 
-n36 = [0.22,0.26,0.11,0.1896,0.1015,0.1355,0.0858,0.1009,0.0816]
+#n36 = [0.22,0.26,0.11,0.1896,0.1015,0.1355,0.0858,0.1009,0.0816]
 
-k =[1,3,5,7,10,20,30,50,100]
+#k =[1,3,5,7,10,20,30,50,100]
 
-plt.title("Dokładność w zależności od k")
-plt.ylabel("Dokładność")
-plt.xlabel("k")
-#plt.bar([i for i in range(1,10)], n3, label="3 klasy")
-#plt.bar([i for i in range(1,10)], n36, label="36 klas")
-#plt.xticks([i for i in range(1,10)])
-plt.plot(k, avg3n1,'b', label="3 klasy L1",linestyle='dashed')
-plt.plot(k, avg3n2, 'b',label="3 klasy L2")
-plt.plot(k, avg36n1,'r', label="36 klas L1",linestyle='dashed')
-plt.plot(k, avg36n2,'r', label="36 klas L2")
-plt.xticks(k)
-plt.legend(loc="upper right")
+#plt.title("Dokładność w zależności od k")
+#plt.ylabel("Dokładność")
+#plt.xlabel("k")
+##plt.bar([i for i in range(1,10)], n3, label="3 klasy")
+##plt.bar([i for i in range(1,10)], n36, label="36 klas")
+##plt.xticks([i for i in range(1,10)])
+#plt.plot(k, avg3n1,'b', label="3 klasy L1",linestyle='dashed')
+#plt.plot(k, avg3n2, 'b',label="3 klasy L2")
+#plt.plot(k, avg36n1,'r', label="36 klas L1",linestyle='dashed')
+#plt.plot(k, avg36n2,'r', label="36 klas L2")
+#plt.xticks(k)
+#plt.legend(loc="upper right")
 
-plt.show()
+#plt.show()
 
 
 # Wczytanie macierzy konfuzji

@@ -43,7 +43,7 @@ class LinearClasiffier:
             self.strataVal.append(valLoss)
             
             if i % 100 == 0:
-                print('iteracja {0}, strata {1}, najlepsza {2}'.format(i, loss, bestloss))
+                print('it {0}, strata {1}, str. test {2}, acc_tr {3} --- acc_test {4}'.format(i, bestloss, valLoss, accT, accV))
 
     def train2(self, Xtrain, Ytrain, X_test, y_test):
         Xtrain = np.concatenate((Xtrain, np.ones((Xtrain.shape[0], 1))), axis=1).T
@@ -57,8 +57,7 @@ class LinearClasiffier:
             loss = loss_fun(Xtrain, Ytrain, self.W) # oblicz stratę
             df = gradient(Xtrain, Ytrain, self.W) # oblicz grad
             #if i % 100 == 0:
-            print('iteracja {0}, strata {1}'.format(i, loss))
-
+            
             valLoss = loss_fun(X_test, y_test, self.W)
             accT = self.predIter(Xtrain, Ytrain)
             accV = self.predIter(X_test, y_test)
@@ -67,6 +66,7 @@ class LinearClasiffier:
             self.accVal.append(accV)
             self.strata.append(loss)
             self.strataVal.append(valLoss)  
+            print('it {0}, strata {1}, str. test {2}, acc_tr {3} --- acc_test {4}'.format(i, loss, valLoss, accT, accV))
 
     def evaluate(self, X_test, y_test):
         y_pred = self.predict(X_test)

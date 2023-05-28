@@ -1,49 +1,47 @@
 3knn1
-acc 0.8107
-Precision = 0.8178
-Recall = 0.8107
-F1 Score = 0.8122
+Dokładność: 0.8109
+Precision = 0.7972
+Recall = 0.7724
+F1 Score = 0.7846
 
 36knn1
-acc 0.2202
-Precision = 0.2579
-Recall = 0.2202
-F1 Score = 0.2232
+Dokładność: 0.2202
+Precision = 0.2100
+Recall = 0.2415
+F1 Score = 0.2247
 
 3knn2
-0.8323
-Precision = 0.8351
-Recall = 0.8323
-F1 Score = 0.8331
+Dokładność: 0.8323
+Precision = 0.8198
+Recall = 0.8110
+F1 Score = 0.8154
 
 36knn2
-0.2621
-Precision = 0.2975
-Recall = 0.2621
-F1 Score = 0.2613
-
+Dokładność: 0.2621
+Precision = 0.2467
+Recall = 0.2419
+F1 Score = 0.2443
 
 3SVM
-0.9729
-Precision = 0.9729
-Recall = 0.9729
-F1 Score = 0.9729
+Dokładność: 0.9665
+Precyzja: 0.9624
+Zwrot: 0.9674
+Miara F1: 0.9649
 
 36SVM
-0.6766
-Precision = 0.699
-Recall = 0.6766
-F1 Score = 0.6784
+Dokładność: 0.6763
+Precyzja: 0.6165
+Zwrot: 0.6725
+Miara F1: 0.6433
 
 3CNN
-Accuracy: 0.9974
-Precision = 0.9974
-Recall = 0.9974
-F1 Score = 0.9974
+Dokładność: 0.9924
+Precyzja: 0.9928
+Zwrot: 0.9868
+Miara F1: 0.9898
 
 36CNN
-Accuracy: 0.9227
-Precision = 0.9304
-Recall = 0.9227
-F1 Score = 0.9236
-
+Dokładność: 0.9225
+Precyzja: 0.8942
+Zwrot: 0.8924
+Miara F1: 0.8933
