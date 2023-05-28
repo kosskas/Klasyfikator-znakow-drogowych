@@ -13,7 +13,7 @@ from Linear import LinearClasiffier
 from kNN import NearestNeighborClasiffier
 from load_data import load_data, get_classes_num, load_images, loadFast
 
-load_data.N_OF_CLASSES = 36 # 36
+load_data.N_OF_CLASSES = 36  # 36
 
 
 def sign_class(idx):
@@ -67,12 +67,12 @@ sign_desc = ["Ograniczenie prędkości do 20 km/h",
 # linear_classifier
 print("loading linear_classifier_model...")
 linear_classifier_model = LinearClasiffier(klasy=get_classes_num(), iters=10000, step=0.00001)
-linear_classifier_model.wczytaj_model("Modele/model_36_100000")
+linear_classifier_model.wczytaj_model("Modele/model_lin36_100000_LS")
 print("done")
 
 # convolutional_network
 print("loading convolutional_network_model...")
-convolutional_network_model = tf.keras.models.load_model("Modele/nsiec36")
+convolutional_network_model = tf.keras.models.load_model("Modele/nsiec36_4")
 print("done")
 
 # kNN
@@ -81,7 +81,6 @@ x_train, y_train = loadFast()
 kNN_model = NearestNeighborClasiffier(klasy=get_classes_num(), norma=2, k=1)
 kNN_model.train(x_train, y_train)
 print("done")
-
 
 
 def image_to_binary_array(model, image_path):
