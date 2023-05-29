@@ -67,12 +67,12 @@ sign_desc = ["Ograniczenie prędkości do 20 km/h",
 # linear_classifier
 print("loading linear_classifier_model...")
 linear_classifier_model = LinearClasiffier(klasy=get_classes_num(), iters=10000, step=0.00001)
-linear_classifier_model.wczytaj_model("Modele/model_36_100000")
+linear_classifier_model.wczytaj_model("Modele/model_lin36_100000_LS")
 print("done")
 
 # convolutional_network
 print("loading convolutional_network_model...")
-convolutional_network_model = tf.keras.models.load_model("Modele/nsiec36")
+convolutional_network_model = tf.keras.models.load_model("Modele/4nsiec36")
 print("done")
 
 # kNN
